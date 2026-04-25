@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>名人戦の歴史</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color-bg: #ffffff;
+      --color-bg-secondary: #f5f4f0;
+      --color-text-primary: #1a1a18;
+      --color-text-secondary: #5f5e5a;
+      --color-text-tertiary: #888780;
+      --color-border: rgba(0,0,0,0.12);
+      --color-border-hover: rgba(0,0,0,0.25);
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-bg: #1c1c1a;
+        --color-bg-secondary: #252523;
+        --color-text-primary: #e8e6de;
+        --color-text-secondary: #9c9a92;
+        --color-text-tertiary: #6b6a63;
+        --color-border: rgba(255,255,255,0.1);
+        --color-border-hover: rgba(255,255,255,0.22);
+      }
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--color-bg);
+      color: var(--color-text-primary);
+      min-height: 100vh;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      background: var(--color-bg);
+      border-bottom: 0.5px solid var(--color-border);
+      z-index: 10;
+      padding: 12px 20px 8px;
+    }
+    header h1 {
+      font-size: 15px;
+      font-weight: 500;
+      margin-bottom: 10px;
+      color: var(--color-text-primary);
+    }
+    .era-btns {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .era-btn {
+      font-size: 12px;
+      font-family: var(--font);
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 0.5px solid var(--color-border-hover);
+      background: transparent;
+      color: var(--color-text-secondary);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .era-btn.active, .era-btn:hover {
+      background: #e6f1fb;
+      color: #185fa5;
+      border-color: transparent;
+    }
+    @media (prefers-color-scheme: dark) {
+      .era-btn.active, .era-btn:hover {
+        background: #0c447c;
+        color: #b5d4f4;
+      }
+    }
+
+    .legend-row {
+      display: flex;
+      gap: 16px;
+      padding: 10px 20px 0;
+      flex-wrap: wrap;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--color-text-secondary);
+    }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+    .timeline {
+      position: relative;
+      padding: 24px 20px 40px 20px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 72px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--color-border);
+    }
+
+    .entry {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 20px;
+      position: relative;
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    .year-col {
+      width: 44px;
+      flex-shrink: 0;
+      text-align: right;
+      padding-top: 10px;
+      font-size: 11px;
+      color: var(--color-text-tertiary);
+      font-weight: 500;
+      line-height: 1.3;
+    }
+    .dot {
+      position: absolute;
+      left: 48px;
+      top: 14px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid var(--color-bg);
+      z-index: 2;
+    }
+    .card {
+      margin-left: 28px;
+      flex: 1;
+      background: var(--color-bg-secondary);
+      border-radius: var(--radius-lg);
+      border: 0.5px solid var(--color-border);
+      padding: 10px 14px;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .card:hover {
+      border-color: var(--color-border-hover);
+      background: var(--color-bg);
+    }
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .card-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--color-text-primary);
+      line-height: 1.4;
+    }
+    .badge {
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .card-body {
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 11px;
+      color: var(--color-text-tertiary);
+      border-top: 0.5px solid var(--color-border);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>名人戦の歴史</h1>
+  <div class="era-btns">
+    <button class="era-btn active" onclick="filterEra('all', this)">すべて</button>
+    <button class="era-btn" onclick="filterEra('edo', this)">江戸〜創設</button>
+    <button class="era-btn" onclick="filterEra('golden', this)">大山・中原時代</button>
+    <button class="era-btn" onclick="filterEra('heisei', this)">羽生時代</button>
+    <button class="era-btn" onclick="filterEra('reiwa', this)">藤井時代</button>
+  </div>
+</header>
+
+<div class="legend-row">
+  <div class="legend-item"><div class="legend-dot" style="background:#534AB7"></div>制度変革</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#0F6E56"></div>名人誕生</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#BA7517"></div>大記録</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#993C1D"></div>激闘・名勝負</div>
+</div>
+
+<div class="timeline" id="timeline"></div>
+
+<footer>将棋連盟公式資料・Wikipedia等をもとに作成</footer>
+
+<script>
+const events = [
+  {
+    year: '1612', era: 'edo', type: 'reform',
+    title: '「名人」の称号が誕生',
+    badge: '江戸時代',
+    body: '徳川家康が棋士・大橋宗桂に俸禄を与え、将棋所を設置。大橋本家・大橋分家・伊藤家の三家の最強者が「名人」を名乗る家元制が確立。一度就いたら死ぬまで名人という終身制の始まり。'
+  },
+  {
+    year: '1935', era: 'edo', type: 'reform',
+    title: '300年の終身制を廃止——実力名人戦の誕生',
+    badge: '歴史的転換',
+    body: '十三世名人・関根金次郎が「後進に道を譲りたい」と自ら名人位の返上を宣言。八段9名によるリーグ戦「名人決定大棋戦」が開始。三百年続いた世襲制がここで幕を閉じた。'
+  },
+  {
+    year: '1937', era: 'edo', type: 'meijin',
+    title: '木村義雄、初代実力制名人に',
+    badge: '第1期',
+    body: '2年半の熾烈なリーグ戦を制し、木村義雄が湯河原の天野屋旅館での大一番で花田長太郎を破り初代名人に。のちに十四世名人として「将棋の神様」と称される。'
+  },
+  {
+    year: '1947', era: 'edo', type: 'reform',
+    title: '順位戦制度の導入',
+    badge: '制度改革',
+    body: '名人への登竜門として順位戦（A〜C級）が設立。名人を目指すには最短5年かけてA級まで昇り詰める必要が生まれた。毎年3月の「将棋界の一番長い日」の原点。'
+  },
+  {
+    year: '1952', era: 'golden', type: 'meijin',
+    title: '大山康晴、名人位を初奪取',
+    badge: '十五世名人',
+    body: '大山康晴が木村義雄から名人位を奪取。その後13期連続名人（1952〜1967年）という空前絶後の記録を樹立。A級順位戦を69歳で亡くなるまで44期連続在位という不滅の大記録も残した。'
+  },
+  {
+    year: '1972', era: 'golden', type: 'clash',
+    title: '中原誠 24歳、大山の天下を終わらせる',
+    badge: '第31期',
+    body: '「棋界の若き太陽」中原誠が大山康晴からフルセット7局の激戦の末に名人位を奪取。戦後生まれ初の名人。以後、大山が名人位に戻ることは二度となかった。中原はその後9期連続名人を含む15期在位。'
+  },
+  {
+    year: '1983', era: 'golden', type: 'clash',
+    title: '谷川浩司 21歳、史上最年少名人誕生',
+    badge: '第41期',
+    body: '21歳2ヶ月で名人位を獲得、当時の史上最年少記録（現在も歴代2位）。「光速の寄せ」と称される鋭い終盤力で棋界に旋風を巻き起こした。のちに十七世名人。'
+  },
+  {
+    year: '1994', era: 'heisei', type: 'meijin',
+    title: '羽生善治、初名人獲得',
+    badge: '第52期',
+    body: '羽生善治が米長邦雄から名人位を奪取。翌1996年には史上初・唯一の七冠同時制覇を達成。名人を通算9期獲得し十九世名人の資格者に。「羽生世代」が将棋界を席巻する時代の幕開け。'
+  },
+  {
+    year: '2003', era: 'heisei', type: 'clash',
+    title: '羽生vs森内——十年超の名人戦バトル',
+    badge: '名勝負列伝',
+    body: '羽生善治と森内俊之は2003〜2014年にかけて6度名人戦で激突。「将棋の神様同士の戦い」と評された。森内が名人8期（十八世名人資格）、羽生が9期と、平成の名人位はこの二人が分け合った。'
+  },
+  {
+    year: '2023', era: 'reiwa', type: 'meijin',
+    title: '藤井聡太 20歳、史上最年少で名人位',
+    badge: '第81期',
+    body: '藤井聡太が渡辺明から名人位を奪取、20歳10ヶ月で名人戦史上最年少記録を更新。AI研究を極限まで活用した序盤の革新と人間離れした終盤力で将棋界の常識を塗り替え続けている。'
+  },
+  {
+    year: '2026', era: 'reiwa', type: 'record',
+    title: '藤井名人、第84期で防衛に挑む',
+    badge: '現在進行中',
+    body: '第84期名人戦七番勝負は挑戦者・糸谷哲郎九段と対局中。第1局（4月8・9日）に続き、4月25・26日に第2局が行われている。'
+  },
+];
+
+const colors = { reform: '#534AB7', meijin: '#0F6E56', record: '#BA7517', clash: '#993C1D' };
+const badgeBg = {
+  reform: 'rgba(83,74,183,0.12)',
+  meijin: 'rgba(15,110,86,0.12)',
+  record: 'rgba(186,117,23,0.12)',
+  clash: 'rgba(153,60,29,0.12)'
+};
+
+function render(era) {
+  const filtered = era === 'all' ? events : events.filter(e => e.era === era);
+  const tl = document.getElementById('timeline');
+  tl.innerHTML = '';
+  filtered.forEach(ev => {
+    const color = colors[ev.type];
+    const bg = badgeBg[ev.type];
+    const div = document.createElement('div');
+    div.className = 'entry';
+    div.innerHTML = `
+      <div class="year-col">${ev.year}</div>
+      <div class="dot" style="background:${color}"></div>
+      <div class="card">
+        <div class="card-top">
+          <div class="card-title">${ev.title}</div>
+          <span class="badge" style="background:${bg};color:${color}">${ev.badge}</span>
+        </div>
+        <div class="card-body">${ev.body}</div>
+      </div>`;
+    tl.appendChild(div);
+  });
+}
+
+function filterEra(era, btn) {
+  document.querySelectorAll('.era-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  render(era);
+}
+
+render('all');
+</script>
+</body>
+</html>
