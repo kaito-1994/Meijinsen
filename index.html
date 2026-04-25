@@ -3,323 +3,616 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>名人戦の歴史</title>
+  <title>名人戦 観戦ガイド</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;700&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --color-bg: #ffffff;
-      --color-bg-secondary: #f5f4f0;
-      --color-text-primary: #1a1a18;
-      --color-text-secondary: #5f5e5a;
-      --color-text-tertiary: #888780;
-      --color-border: rgba(0,0,0,0.12);
-      --color-border-hover: rgba(0,0,0,0.25);
-      --radius-md: 8px;
-      --radius-lg: 12px;
-      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --ink: #1a1510;
+      --ink2: #4a4035;
+      --ink3: #8a7c6e;
+      --paper: #faf8f4;
+      --paper2: #f2ede4;
+      --paper3: #e8e0d4;
+      --gold: #b8860b;
+      --gold-light: #d4a843;
+      --red: #8b2020;
+      --red-light: #c44040;
+      --border: rgba(90,70,40,0.15);
+      --border2: rgba(90,70,40,0.3);
+      --serif: 'Noto Serif JP', serif;
+      --sans: 'Noto Sans JP', sans-serif;
     }
     @media (prefers-color-scheme: dark) {
       :root {
-        --color-bg: #1c1c1a;
-        --color-bg-secondary: #252523;
-        --color-text-primary: #e8e6de;
-        --color-text-secondary: #9c9a92;
-        --color-text-tertiary: #6b6a63;
-        --color-border: rgba(255,255,255,0.1);
-        --color-border-hover: rgba(255,255,255,0.22);
+        --ink: #e8e0d0;
+        --ink2: #b8ad9e;
+        --ink3: #7a7060;
+        --paper: #18160f;
+        --paper2: #221e15;
+        --paper3: #2e281c;
+        --border: rgba(200,180,140,0.12);
+        --border2: rgba(200,180,140,0.25);
       }
     }
 
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      font-family: var(--font);
-      background: var(--color-bg);
-      color: var(--color-text-primary);
-      min-height: 100vh;
+      font-family: var(--sans);
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.7;
     }
 
-    header {
+    /* ── NAV ── */
+    nav {
       position: sticky;
       top: 0;
-      background: var(--color-bg);
-      border-bottom: 0.5px solid var(--color-border);
-      z-index: 10;
-      padding: 12px 20px 8px;
+      z-index: 100;
+      background: var(--paper);
+      border-bottom: 1px solid var(--border2);
+      display: flex;
+      align-items: center;
+      gap: 0;
+      padding: 0 20px;
+      overflow-x: auto;
+      scrollbar-width: none;
     }
-    header h1 {
-      font-size: 15px;
-      font-weight: 500;
-      margin-bottom: 10px;
-      color: var(--color-text-primary);
+    nav::-webkit-scrollbar { display: none; }
+    .nav-brand {
+      font-family: var(--serif);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--gold);
+      white-space: nowrap;
+      padding: 14px 16px 14px 0;
+      border-right: 1px solid var(--border2);
+      margin-right: 4px;
     }
-    .era-btns {
+    .nav-tab {
+      font-size: 12px;
+      font-family: var(--sans);
+      padding: 14px 14px;
+      color: var(--ink3);
+      cursor: pointer;
+      white-space: nowrap;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+      background: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+    }
+    .nav-tab:hover { color: var(--ink2); }
+    .nav-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+    /* ── SECTIONS ── */
+    .section { display: none; padding: 32px 20px 60px; max-width: 780px; margin: 0 auto; }
+    .section.active { display: block; }
+
+    /* ── HISTORY ── */
+    .era-row {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
+      margin-bottom: 28px;
     }
     .era-btn {
-      font-size: 12px;
-      font-family: var(--font);
+      font-size: 11px;
+      font-family: var(--sans);
       padding: 4px 12px;
       border-radius: 20px;
-      border: 0.5px solid var(--color-border-hover);
+      border: 1px solid var(--border2);
       background: transparent;
-      color: var(--color-text-secondary);
+      color: var(--ink3);
       cursor: pointer;
       transition: all 0.15s;
     }
     .era-btn.active, .era-btn:hover {
-      background: #e6f1fb;
-      color: #185fa5;
-      border-color: transparent;
+      background: var(--gold);
+      color: var(--paper);
+      border-color: var(--gold);
     }
-    @media (prefers-color-scheme: dark) {
-      .era-btn.active, .era-btn:hover {
-        background: #0c447c;
-        color: #b5d4f4;
-      }
-    }
-
-    .legend-row {
-      display: flex;
-      gap: 16px;
-      padding: 10px 20px 0;
-      flex-wrap: wrap;
-    }
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      color: var(--color-text-secondary);
-    }
-    .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
-
-    .timeline {
-      position: relative;
-      padding: 24px 20px 40px 20px;
-      max-width: 720px;
-      margin: 0 auto;
-    }
+    .timeline { position: relative; }
     .timeline::before {
       content: '';
       position: absolute;
-      left: 72px;
-      top: 0;
-      bottom: 0;
-      width: 1px;
-      background: var(--color-border);
-    }
-
-    .entry {
-      display: flex;
-      gap: 16px;
-      margin-bottom: 20px;
-      position: relative;
-      animation: fadeIn 0.3s ease;
-    }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
-    .year-col {
-      width: 44px;
-      flex-shrink: 0;
-      text-align: right;
-      padding-top: 10px;
-      font-size: 11px;
-      color: var(--color-text-tertiary);
-      font-weight: 500;
-      line-height: 1.3;
-    }
-    .dot {
-      position: absolute;
       left: 48px;
-      top: 14px;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      border: 2px solid var(--color-bg);
-      z-index: 2;
+      top: 0; bottom: 0;
+      width: 1px;
+      background: var(--border2);
     }
-    .card {
-      margin-left: 28px;
-      flex: 1;
-      background: var(--color-bg-secondary);
-      border-radius: var(--radius-lg);
-      border: 0.5px solid var(--color-border);
+    .t-entry { display: flex; gap: 14px; margin-bottom: 18px; position: relative; }
+    .t-year {
+      width: 38px; flex-shrink: 0; text-align: right;
+      padding-top: 10px; font-size: 10px; color: var(--ink3);
+      font-family: var(--serif); line-height: 1.2;
+    }
+    .t-dot {
+      position: absolute; left: 42px; top: 14px;
+      width: 14px; height: 14px; border-radius: 50%;
+      border: 2px solid var(--paper);
+    }
+    .t-card {
+      margin-left: 24px; flex: 1;
+      background: var(--paper2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
       padding: 10px 14px;
-      transition: border-color 0.15s, background 0.15s;
+      transition: border-color 0.15s;
     }
-    .card:hover {
-      border-color: var(--color-border-hover);
-      background: var(--color-bg);
+    .t-card:hover { border-color: var(--border2); }
+    .t-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+    .t-title { font-family: var(--serif); font-size: 13px; font-weight: 500; line-height: 1.4; }
+    .t-badge { font-size: 10px; padding: 2px 8px; border-radius: 10px; white-space: nowrap; flex-shrink: 0; }
+    .t-body { font-size: 12px; color: var(--ink2); line-height: 1.7; }
+    .legend-row { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 20px; }
+    .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--ink3); }
+    .legend-dot { width: 9px; height: 9px; border-radius: 50%; }
+
+    /* ── PLAYERS ── */
+    .players-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 540px) { .players-grid { grid-template-columns: 1fr; } }
+    .player-card {
+      background: var(--paper2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
     }
-    .card-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 8px;
+    .player-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+    .player-header {
+      padding: 18px 18px 12px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .player-mon {
+      font-size: 32px;
+      line-height: 1;
+      margin-bottom: 8px;
+      opacity: 0.15;
+      position: absolute;
+      top: 12px; right: 14px;
+    }
+    .player-name { font-family: var(--serif); font-size: 18px; font-weight: 700; }
+    .player-kana { font-size: 11px; color: var(--ink3); margin-bottom: 6px; }
+    .player-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .player-tag {
+      font-size: 10px; padding: 2px 8px; border-radius: 10px;
+      background: var(--paper3); color: var(--ink2);
+    }
+    .player-tag.red { background: rgba(139,32,32,0.1); color: var(--red); }
+    .player-tag.gold { background: rgba(184,134,11,0.1); color: var(--gold); }
+    .player-body { padding: 14px 18px; }
+    .player-section { margin-bottom: 12px; }
+    .player-section:last-child { margin-bottom: 0; }
+    .player-label {
+      font-size: 10px; font-weight: 500; color: var(--gold);
+      text-transform: uppercase; letter-spacing: 0.08em;
       margin-bottom: 4px;
     }
-    .card-title {
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--color-text-primary);
-      line-height: 1.4;
-    }
-    .badge {
-      font-size: 10px;
-      padding: 2px 8px;
-      border-radius: 10px;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-    .card-body {
+    .player-text { font-size: 12px; color: var(--ink2); line-height: 1.7; }
+    .player-quote {
+      font-family: var(--serif);
       font-size: 12px;
-      color: var(--color-text-secondary);
-      line-height: 1.6;
+      color: var(--ink);
+      border-left: 2px solid var(--gold-light);
+      padding: 6px 10px;
+      background: var(--paper3);
+      border-radius: 0 6px 6px 0;
+      line-height: 1.8;
     }
 
-    footer {
-      text-align: center;
-      padding: 24px;
-      font-size: 11px;
-      color: var(--color-text-tertiary);
-      border-top: 0.5px solid var(--color-border);
+    /* ── CULTURE ── */
+    .culture-grid { display: grid; gap: 14px; }
+    .culture-card {
+      background: var(--paper2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
     }
+    .culture-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 18px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .culture-icon { font-size: 22px; flex-shrink: 0; }
+    .culture-title { font-family: var(--serif); font-size: 14px; font-weight: 500; flex: 1; }
+    .culture-arrow {
+      font-size: 12px; color: var(--ink3);
+      transition: transform 0.25s;
+    }
+    .culture-card.open .culture-arrow { transform: rotate(180deg); }
+    .culture-body {
+      display: none;
+      padding: 0 18px 16px;
+      font-size: 13px;
+      color: var(--ink2);
+      line-height: 1.8;
+      border-top: 1px solid var(--border);
+      padding-top: 14px;
+    }
+    .culture-card.open .culture-body { display: block; }
+    .culture-highlight {
+      background: var(--paper3);
+      border-left: 3px solid var(--gold-light);
+      padding: 8px 12px;
+      border-radius: 0 6px 6px 0;
+      margin-top: 10px;
+      font-size: 12px;
+    }
+
+    /* ── GLOSSARY ── */
+    .gloss-search {
+      width: 100%; padding: 10px 14px;
+      font-size: 13px; font-family: var(--sans);
+      background: var(--paper2);
+      border: 1px solid var(--border2);
+      border-radius: 8px;
+      color: var(--ink);
+      margin-bottom: 20px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .gloss-search:focus { border-color: var(--gold); }
+    .gloss-group { margin-bottom: 24px; }
+    .gloss-cat {
+      font-size: 10px; font-weight: 500; color: var(--gold);
+      letter-spacing: 0.1em; text-transform: uppercase;
+      border-bottom: 1px solid var(--border2);
+      padding-bottom: 6px; margin-bottom: 12px;
+    }
+    .gloss-item {
+      display: flex; gap: 12px; padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .gloss-item:last-child { border-bottom: none; }
+    .gloss-term {
+      font-family: var(--serif); font-size: 14px; font-weight: 500;
+      min-width: 90px; flex-shrink: 0; color: var(--ink);
+    }
+    .gloss-read { font-size: 10px; color: var(--ink3); display: block; margin-top: 2px; }
+    .gloss-def { font-size: 12px; color: var(--ink2); line-height: 1.7; }
+    .gloss-empty { font-size: 13px; color: var(--ink3); padding: 20px 0; text-align: center; }
+
+    /* ── SECTION HEADER ── */
+    .sec-header { margin-bottom: 24px; }
+    .sec-label {
+      font-size: 10px; font-weight: 500; color: var(--gold);
+      letter-spacing: 0.12em; text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .sec-title { font-family: var(--serif); font-size: 22px; font-weight: 700; }
+    .sec-sub { font-size: 13px; color: var(--ink3); margin-top: 6px; }
   </style>
 </head>
 <body>
 
-<header>
-  <h1>名人戦の歴史</h1>
-  <div class="era-btns">
-    <button class="era-btn active" onclick="filterEra('all', this)">すべて</button>
-    <button class="era-btn" onclick="filterEra('edo', this)">江戸〜創設</button>
-    <button class="era-btn" onclick="filterEra('golden', this)">大山・中原時代</button>
-    <button class="era-btn" onclick="filterEra('heisei', this)">羽生時代</button>
-    <button class="era-btn" onclick="filterEra('reiwa', this)">藤井時代</button>
-  </div>
-</header>
+<nav>
+  <div class="nav-brand">名人戦</div>
+  <button class="nav-tab active" onclick="showTab('history', this)">歴史</button>
+  <button class="nav-tab" onclick="showTab('players', this)">棋士</button>
+  <button class="nav-tab" onclick="showTab('culture', this)">しきたり</button>
+  <button class="nav-tab" onclick="showTab('glossary', this)">用語集</button>
+</nav>
 
-<div class="legend-row">
-  <div class="legend-item"><div class="legend-dot" style="background:#534AB7"></div>制度変革</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#0F6E56"></div>名人誕生</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#BA7517"></div>大記録</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#993C1D"></div>激闘・名勝負</div>
+<!-- ══════════ HISTORY ══════════ -->
+<div id="history" class="section active">
+  <div class="sec-header">
+    <div class="sec-label">Timeline</div>
+    <div class="sec-title">名人戦の歴史</div>
+    <div class="sec-sub">1612年から続く「名人」の400年</div>
+  </div>
+  <div class="era-row">
+    <button class="era-btn active" onclick="filterEra('all',this)">すべて</button>
+    <button class="era-btn" onclick="filterEra('edo',this)">江戸〜創設</button>
+    <button class="era-btn" onclick="filterEra('golden',this)">大山・中原時代</button>
+    <button class="era-btn" onclick="filterEra('heisei',this)">羽生時代</button>
+    <button class="era-btn" onclick="filterEra('reiwa',this)">藤井時代</button>
+  </div>
+  <div class="legend-row">
+    <div class="legend-item"><div class="legend-dot" style="background:#534AB7"></div>制度変革</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#0F6E56"></div>名人誕生</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#BA7517"></div>大記録</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#993C1D"></div>激闘・名勝負</div>
+  </div>
+  <div class="timeline" id="timeline"></div>
 </div>
 
-<div class="timeline" id="timeline"></div>
+<!-- ══════════ PLAYERS ══════════ -->
+<div id="players" class="section">
+  <div class="sec-header">
+    <div class="sec-label">Players</div>
+    <div class="sec-title">棋士プロフィール</div>
+    <div class="sec-sub">強さよりも「この人面白い」を入口に</div>
+  </div>
+  <div class="players-grid">
 
-<footer>将棋連盟公式資料・Wikipedia等をもとに作成</footer>
+    <div class="player-card">
+      <div class="player-header">
+        <div class="player-mon">王</div>
+        <div class="player-kana">ふじい そうた</div>
+        <div class="player-name">藤井聡太</div>
+        <div style="font-size:11px;color:var(--ink3);margin-bottom:8px;">名人・王将・棋王・王位 ほか</div>
+        <div class="player-tags">
+          <span class="player-tag gold">現名人</span>
+          <span class="player-tag red">最年少記録保持</span>
+          <span class="player-tag">AI超えの申し子</span>
+        </div>
+      </div>
+      <div class="player-body">
+        <div class="player-section">
+          <div class="player-label">棋風</div>
+          <div class="player-text">序盤から緻密な研究、終盤はAIをも凌ぐ精度。「強い人にしか見えない景色がある」という言葉通り、常に上を見続ける。人間離れした読みの深さ。</div>
+        </div>
+        <div class="player-section">
+          <div class="player-label">エピソード</div>
+          <div class="player-text">奨励会時代、一人で大阪に泊まりがけで行かせたら「服と傘を全部将棋会館に忘れて帰った」。「100万円あったら何に使う？」に「100万円のパソコンを買います」と即答。5歳で将棋を始め、その冬には詰将棋を次々と解いていたという天才ぶり。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="player-card">
+      <div class="player-header">
+        <div class="player-mon">哲</div>
+        <div class="player-kana">いとだに てつろう</div>
+        <div class="player-name">糸谷哲郎</div>
+        <div style="font-size:11px;color:var(--ink3);margin-bottom:8px;">九段（元竜王）</div>
+        <div class="player-tags">
+          <span class="player-tag gold">第84期挑戦者</span>
+          <span class="player-tag">阪大院・哲学修士</span>
+          <span class="player-tag">愛称：ダニー</span>
+        </div>
+      </div>
+      <div class="player-body">
+        <div class="player-section">
+          <div class="player-label">棋風</div>
+          <div class="player-text">超早指し・力戦型。羽生九段に「なぜいつも中段玉になるのか不思議」と言われるほど不定形な将棋を好む。対局中の頻繁な離席・散歩も名物。「歩いていたほうが思考がまとまる」。</div>
+        </div>
+        <div class="player-section">
+          <div class="player-label">エピソード</div>
+          <div class="player-text">ハイデッガーの存在論で修士号取得という将棋界唯一の哲学者棋士。竜王戦前夜祭で「シャーマニズムと将棋の類似性」を語り会場をざわつかせる。スイーツ好きで差し入れの質は棋界一と評判。イベントでは「名前が出るだけで客席が笑う」と言われる愛されキャラ。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="player-card">
+      <div class="player-header">
+        <div class="player-mon">翔</div>
+        <div class="player-kana">はぶ よしはる</div>
+        <div class="player-name">羽生善治</div>
+        <div style="font-size:11px;color:var(--ink3);margin-bottom:8px;">九段（十九世名人資格者）</div>
+        <div class="player-tags">
+          <span class="player-tag gold">七冠同時制覇</span>
+          <span class="player-tag">名人9期</span>
+          <span class="player-tag">国民栄誉賞</span>
+        </div>
+      </div>
+      <div class="player-body">
+        <div class="player-section">
+          <div class="player-label">棋風</div>
+          <div class="player-text">「羽生マジック」と呼ばれる常識を超えた一手が代名詞。序盤から終盤まで全てが高水準で、盤面全体を俯瞰して指す大局観の持ち主。</div>
+        </div>
+        <div class="player-section">
+          <div class="player-label">エピソード</div>
+          <div class="player-text">1996年に史上唯一の七冠同時制覇。チェスでも国際マスターの称号を持つ。若き日の藤井聡太との対局後「今の藤井さんはかなり完成されている。私がプロに成り立ての時と全く違う」と語った。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="player-card">
+      <div class="player-header">
+        <div class="player-mon">山</div>
+        <div class="player-kana">おおやま やすはる</div>
+        <div class="player-name">大山康晴</div>
+        <div style="font-size:11px;color:var(--ink3);margin-bottom:8px;">十五世名人（1923〜1992）</div>
+        <div class="player-tags">
+          <span class="player-tag gold">名人13連覇</span>
+          <span class="player-tag">A級44期連続</span>
+          <span class="player-tag">文化功労者</span>
+        </div>
+      </div>
+      <div class="player-body">
+        <div class="player-section">
+          <div class="player-label">棋風</div>
+          <div class="player-text">「受けの大山」。相手の攻めをいなし、じっくり受け潰す。盤外でも圧力をかける「盤外戦術」も有名で、69歳で亡くなるまでA級に在籍し続けた。</div>
+        </div>
+        <div class="player-section">
+          <div class="player-label">エピソード</div>
+          <div class="player-text">A級順位戦を44期連続在位という破られない大記録。タイトル戦50期連続出場（10年間）も不滅の記録。日本将棋連盟会長を20年以上務め、将棋界の発展に貢献した。</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════ CULTURE ══════════ -->
+<div id="culture" class="section">
+  <div class="sec-header">
+    <div class="sec-label">Culture</div>
+    <div class="sec-title">名人戦のしきたり</div>
+    <div class="sec-sub">将棋を知らなくても惹かれる、名人戦の文化的演出</div>
+  </div>
+  <div class="culture-grid" id="culture-grid"></div>
+</div>
+
+<!-- ══════════ GLOSSARY ══════════ -->
+<div id="glossary" class="section">
+  <div class="sec-header">
+    <div class="sec-label">Glossary</div>
+    <div class="sec-title">観戦用語集</div>
+    <div class="sec-sub">ABEMAの解説でよく出てくる言葉をさっと引ける</div>
+  </div>
+  <input class="gloss-search" type="search" placeholder="用語を検索…" oninput="filterGloss(this.value)">
+  <div id="gloss-container"></div>
+</div>
 
 <script>
-const events = [
-  {
-    year: '1612', era: 'edo', type: 'reform',
-    title: '「名人」の称号が誕生',
-    badge: '江戸時代',
-    body: '徳川家康が棋士・大橋宗桂に俸禄を与え、将棋所を設置。大橋本家・大橋分家・伊藤家の三家の最強者が「名人」を名乗る家元制が確立。一度就いたら死ぬまで名人という終身制の始まり。'
-  },
-  {
-    year: '1935', era: 'edo', type: 'reform',
-    title: '300年の終身制を廃止——実力名人戦の誕生',
-    badge: '歴史的転換',
-    body: '十三世名人・関根金次郎が「後進に道を譲りたい」と自ら名人位の返上を宣言。八段9名によるリーグ戦「名人決定大棋戦」が開始。三百年続いた世襲制がここで幕を閉じた。'
-  },
-  {
-    year: '1937', era: 'edo', type: 'meijin',
-    title: '木村義雄、初代実力制名人に',
-    badge: '第1期',
-    body: '2年半の熾烈なリーグ戦を制し、木村義雄が湯河原の天野屋旅館での大一番で花田長太郎を破り初代名人に。のちに十四世名人として「将棋の神様」と称される。'
-  },
-  {
-    year: '1947', era: 'edo', type: 'reform',
-    title: '順位戦制度の導入',
-    badge: '制度改革',
-    body: '名人への登竜門として順位戦（A〜C級）が設立。名人を目指すには最短5年かけてA級まで昇り詰める必要が生まれた。毎年3月の「将棋界の一番長い日」の原点。'
-  },
-  {
-    year: '1952', era: 'golden', type: 'meijin',
-    title: '大山康晴、名人位を初奪取',
-    badge: '十五世名人',
-    body: '大山康晴が木村義雄から名人位を奪取。その後13期連続名人（1952〜1967年）という空前絶後の記録を樹立。A級順位戦を69歳で亡くなるまで44期連続在位という不滅の大記録も残した。'
-  },
-  {
-    year: '1972', era: 'golden', type: 'clash',
-    title: '中原誠 24歳、大山の天下を終わらせる',
-    badge: '第31期',
-    body: '「棋界の若き太陽」中原誠が大山康晴からフルセット7局の激戦の末に名人位を奪取。戦後生まれ初の名人。以後、大山が名人位に戻ることは二度となかった。中原はその後9期連続名人を含む15期在位。'
-  },
-  {
-    year: '1983', era: 'golden', type: 'clash',
-    title: '谷川浩司 21歳、史上最年少名人誕生',
-    badge: '第41期',
-    body: '21歳2ヶ月で名人位を獲得、当時の史上最年少記録（現在も歴代2位）。「光速の寄せ」と称される鋭い終盤力で棋界に旋風を巻き起こした。のちに十七世名人。'
-  },
-  {
-    year: '1994', era: 'heisei', type: 'meijin',
-    title: '羽生善治、初名人獲得',
-    badge: '第52期',
-    body: '羽生善治が米長邦雄から名人位を奪取。翌1996年には史上初・唯一の七冠同時制覇を達成。名人を通算9期獲得し十九世名人の資格者に。「羽生世代」が将棋界を席巻する時代の幕開け。'
-  },
-  {
-    year: '2003', era: 'heisei', type: 'clash',
-    title: '羽生vs森内——十年超の名人戦バトル',
-    badge: '名勝負列伝',
-    body: '羽生善治と森内俊之は2003〜2014年にかけて6度名人戦で激突。「将棋の神様同士の戦い」と評された。森内が名人8期（十八世名人資格）、羽生が9期と、平成の名人位はこの二人が分け合った。'
-  },
-  {
-    year: '2023', era: 'reiwa', type: 'meijin',
-    title: '藤井聡太 20歳、史上最年少で名人位',
-    badge: '第81期',
-    body: '藤井聡太が渡辺明から名人位を奪取、20歳10ヶ月で名人戦史上最年少記録を更新。AI研究を極限まで活用した序盤の革新と人間離れした終盤力で将棋界の常識を塗り替え続けている。'
-  },
-  {
-    year: '2026', era: 'reiwa', type: 'record',
-    title: '藤井名人、第84期で防衛に挑む',
-    badge: '現在進行中',
-    body: '第84期名人戦七番勝負は挑戦者・糸谷哲郎九段と対局中。第1局（4月8・9日）に続き、4月25・26日に第2局が行われている。'
-  },
-];
-
-const colors = { reform: '#534AB7', meijin: '#0F6E56', record: '#BA7517', clash: '#993C1D' };
-const badgeBg = {
-  reform: 'rgba(83,74,183,0.12)',
-  meijin: 'rgba(15,110,86,0.12)',
-  record: 'rgba(186,117,23,0.12)',
-  clash: 'rgba(153,60,29,0.12)'
-};
-
-function render(era) {
-  const filtered = era === 'all' ? events : events.filter(e => e.era === era);
-  const tl = document.getElementById('timeline');
-  tl.innerHTML = '';
-  filtered.forEach(ev => {
-    const color = colors[ev.type];
-    const bg = badgeBg[ev.type];
-    const div = document.createElement('div');
-    div.className = 'entry';
-    div.innerHTML = `
-      <div class="year-col">${ev.year}</div>
-      <div class="dot" style="background:${color}"></div>
-      <div class="card">
-        <div class="card-top">
-          <div class="card-title">${ev.title}</div>
-          <span class="badge" style="background:${bg};color:${color}">${ev.badge}</span>
-        </div>
-        <div class="card-body">${ev.body}</div>
-      </div>`;
-    tl.appendChild(div);
-  });
+/* ─── TAB ─── */
+function showTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
 }
 
+/* ─── HISTORY ─── */
+const events = [
+  { year:'1612', era:'edo', type:'reform', title:'「名人」の称号が誕生', badge:'江戸時代',
+    body:'徳川家康が棋士・大橋宗桂に俸禄を与え、将棋所を設置。大橋本家・大橋分家・伊藤家の三家の最強者が「名人」を名乗る家元制が確立。一度就いたら死ぬまで名人という終身制の始まり。' },
+  { year:'1935', era:'edo', type:'reform', title:'300年の終身制を廃止——実力名人戦の誕生', badge:'歴史的転換',
+    body:'十三世名人・関根金次郎が「後進に道を譲りたい」と自ら名人位の返上を宣言。八段9名によるリーグ戦「名人決定大棋戦」が開始。三百年続いた世襲制がここで幕を閉じた。' },
+  { year:'1937', era:'edo', type:'meijin', title:'木村義雄、初代実力制名人に', badge:'第1期',
+    body:'2年半の熾烈なリーグ戦を制し、木村義雄が湯河原の天野屋旅館での大一番で花田長太郎を破り初代名人に。のちに十四世名人として「将棋の神様」と称される。' },
+  { year:'1947', era:'edo', type:'reform', title:'順位戦制度の導入', badge:'制度改革',
+    body:'名人への登竜門として順位戦（A〜C級）が設立。名人を目指すには最短5年かけてA級まで昇り詰める必要が生まれた。毎年3月の「将棋界の一番長い日」の原点。' },
+  { year:'1952', era:'golden', type:'meijin', title:'大山康晴、名人位を初奪取', badge:'十五世名人',
+    body:'大山康晴が木村義雄から名人位を奪取。その後13期連続名人（1952〜1967年）という空前絶後の記録を樹立。A級順位戦を69歳で亡くなるまで44期連続在位という不滅の大記録も残した。' },
+  { year:'1972', era:'golden', type:'clash', title:'中原誠 24歳、大山の天下を終わらせる', badge:'第31期',
+    body:'「棋界の若き太陽」中原誠が大山康晴からフルセット7局の激戦の末に名人位を奪取。戦後生まれ初の名人。以後、大山が名人位に戻ることは二度となかった。中原はその後9期連続名人を含む15期在位。' },
+  { year:'1983', era:'golden', type:'clash', title:'谷川浩司 21歳、史上最年少名人誕生', badge:'第41期',
+    body:'21歳2ヶ月で名人位を獲得、当時の史上最年少記録（現在も歴代2位）。「光速の寄せ」と称される鋭い終盤力で棋界に旋風を巻き起こした。のちに十七世名人。' },
+  { year:'1994', era:'heisei', type:'meijin', title:'羽生善治、初名人獲得', badge:'第52期',
+    body:'羽生善治が米長邦雄から名人位を奪取。翌1996年には史上初・唯一の七冠同時制覇を達成。名人を通算9期獲得し十九世名人の資格者に。「羽生世代」が将棋界を席巻する時代の幕開け。' },
+  { year:'2003', era:'heisei', type:'clash', title:'羽生vs森内——十年超の名人戦バトル', badge:'名勝負列伝',
+    body:'羽生善治と森内俊之は2003〜2014年にかけて6度名人戦で激突。「将棋の神様同士の戦い」と評された。森内が名人8期（十八世名人資格）、羽生が9期と、平成の名人位はこの二人が分け合った。' },
+  { year:'2023', era:'reiwa', type:'meijin', title:'藤井聡太 20歳、史上最年少で名人位', badge:'第81期',
+    body:'藤井聡太が渡辺明から名人位を奪取、20歳10ヶ月で名人戦史上最年少記録を更新。AI研究を極限まで活用した序盤の革新と人間離れした終盤力で将棋界の常識を塗り替え続けている。' },
+  { year:'2026', era:'reiwa', type:'record', title:'藤井名人、第84期で防衛に挑む', badge:'現在進行中',
+    body:'第84期名人戦七番勝負は挑戦者・糸谷哲郎九段と対局中。第1局（4月8・9日）に続き、4月25・26日に第2局が行われている。' },
+];
+const tColors = { reform:'#534AB7', meijin:'#0F6E56', record:'#BA7517', clash:'#993C1D' };
+const tBgColors = { reform:'rgba(83,74,183,0.1)', meijin:'rgba(15,110,86,0.1)', record:'rgba(186,117,23,0.1)', clash:'rgba(153,60,29,0.1)' };
+
+function renderTimeline(era) {
+  const filtered = era === 'all' ? events : events.filter(e => e.era === era);
+  document.getElementById('timeline').innerHTML = filtered.map(ev => `
+    <div class="t-entry">
+      <div class="t-year">${ev.year}</div>
+      <div class="t-dot" style="background:${tColors[ev.type]}"></div>
+      <div class="t-card">
+        <div class="t-top">
+          <div class="t-title">${ev.title}</div>
+          <span class="t-badge" style="background:${tBgColors[ev.type]};color:${tColors[ev.type]}">${ev.badge}</span>
+        </div>
+        <div class="t-body">${ev.body}</div>
+      </div>
+    </div>`).join('');
+}
 function filterEra(era, btn) {
   document.querySelectorAll('.era-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  render(era);
+  renderTimeline(era);
+}
+renderTimeline('all');
+
+/* ─── CULTURE ─── */
+const cultures = [
+  { icon:'🏯', title:'なぜ旅館・料亭で指すの？',
+    body:'名人戦は格式ある旅館や料亭が会場です。これは江戸時代に将軍御前で対局した伝統を引き継ぐもの。対局者は前日から宿泊し、畳の部屋で正座して対局します。緊張感のある静寂と、和の空間が「勝負の場」を演出します。',
+    highlight:'第66期以降、第1局は東京・椿山荘で固定。第2〜5局は全国の自治体から公募で決まります。' },
+  { icon:'📜', title:'封じ手とは何か？',
+    body:'名人戦は2日制で行われます。1日目の終了時、対局者は次の一手を紙に書いて封筒に入れ、立会人に預けます。これが「封じ手」。翌朝その封筒を開けて対局が再開されます。相手に手を読まれないための古来からの知恵です。',
+    highlight:'封じ手は貴重なコレクターズアイテムにもなり、オークションで高額落札されることも。藤井聡太の封じ手は1通750万円で落札された記録があります。' },
+  { icon:'🍱', title:'おやつ・食事も注目される',
+    body:'対局者は昼食・おやつを注文できます。何を注文するかもファンの間で話題に。「藤井聡太がおやつを○○にした」というニュースが流れるほど。ABEMAの中継では対局者の食事シーンも映し出されます。',
+    highlight:'対局者が何を食べるかは、棋士の個性が出る場面。緊張している時と余裕がある時で注文が変わる棋士もいます。' },
+  { icon:'👘', title:'和服で指す意味',
+    body:'名人戦ではほとんどの棋士が和装で対局に臨みます。これは江戸時代からの伝統であり、「名人戦にふさわしい格式」を示すもの。特別な対局であることを、着物が体現しています。',
+    highlight:'和服の格にも種類があり、対局の格に合わせた装いを選びます。若い棋士でも名人戦では正式な和服を着用します。' },
+  { icon:'🌸', title:'将棋界の一番長い日',
+    body:'毎年3月上旬に行われるA級順位戦最終日は「将棋界の一番長い日」と呼ばれます。この日に名人への挑戦者と、降級者2名が決まります。複数局が同時進行し、深夜まで決着がつかないこともあります。',
+    highlight:'この日の結果次第で棋士の運命が大きく変わります。ABEMAでも全局が生中継されるファン必見の一日。' },
+  { icon:'🤝', title:'感想戦という文化',
+    body:'対局終了後、両者は盤を挟んで「どうすれば良かったか」を話し合います。これが「感想戦」。勝っても負けても行うのが棋士の礼儀。時にはこの感想戦が1〜2時間に及ぶこともあります。',
+    highlight:'感想戦は勝負とは別の「もう一つの将棋」。ここでの二人の会話が観る将にも人気です。' },
+];
+
+document.getElementById('culture-grid').innerHTML = cultures.map((c, i) => `
+  <div class="culture-card" id="cc${i}">
+    <div class="culture-head" onclick="toggleCulture(${i})">
+      <span class="culture-icon">${c.icon}</span>
+      <span class="culture-title">${c.title}</span>
+      <span class="culture-arrow">▼</span>
+    </div>
+    <div class="culture-body">
+      <p>${c.body}</p>
+      <div class="culture-highlight">${c.highlight}</div>
+    </div>
+  </div>`).join('');
+
+function toggleCulture(i) {
+  document.getElementById('cc'+i).classList.toggle('open');
 }
 
-render('all');
+/* ─── GLOSSARY ─── */
+const glossData = [
+  { cat:'対局の流れ', terms: [
+    { term:'封じ手', read:'ふうじて', def:'2日制対局で1日目終了時に次の一手を紙に封じること。翌朝開封して対局再開。相手に読まれないための工夫。' },
+    { term:'投了', read:'とうりょう', def:'負けを認めて対局を終わらせること。「負けました」と頭を下げる。詰みが確定する前に投了するのが礼儀。' },
+    { term:'感想戦', read:'かんそうせん', def:'対局後に両者が盤を前に振り返る場。勝者も敗者も参加する将棋界の文化で、時に対局より長くなることも。' },
+    { term:'持将棋', read:'もちしょうぎ', def:'両者の玉が相手陣に入り込んで決着がつかない状態。点数で勝負するか指し直しになる。' },
+    { term:'千日手', read:'せんにちて', def:'同じ局面が4回繰り返されると成立。引き分けとなり基本的に指し直しになる。' },
+  ]},
+  { cat:'形勢・評価', terms: [
+    { term:'形勢判断', read:'けいせいはんだん', def:'今の局面でどちらが有利かを判断すること。AIが数値で示す「評価値」がわかりやすい指標になっている。' },
+    { term:'評価値', read:'ひょうかち', def:'AIが計算した局面の有利不利を数値化したもの。プラスが先手有利、マイナスが後手有利。ABEMAで表示される。' },
+    { term:'逆転', read:'ぎゃくてん', def:'不利だった側が逆に有利になること。将棋は最後まで逆転があり得るのが醍醐味。' },
+    { term:'大局観', read:'たいきょくかん', def:'盤全体を俯瞰して方針を決める能力。細かい読みだけでなく「この将棋どこへ向かうか」を感じる力。' },
+    { term:'優勢', read:'ゆうせい', def:'有利だが勝ちが決まったわけではない状態。ここから逆転されることもある。' },
+  ]},
+  { cat:'戦い方・戦法', terms: [
+    { term:'居飛車', read:'いびしゃ', def:'飛車を初期位置（右側）に置いたまま戦う戦型。藤井聡太名人がよく採用する。' },
+    { term:'振り飛車', read:'ふりびしゃ', def:'飛車を左側に振って戦う戦型。大山康晴が多用し「振り飛車党」の棋士は今も多い。' },
+    { term:'囲い', read:'かこい', def:'自分の玉を守るための陣形。「美濃囲い」「穴熊」「矢倉」など多数ある。' },
+    { term:'詰み', read:'つみ', def:'玉が逃げ場も合駒もなく必ず取られる状態。詰みが確定した瞬間に対局終了。' },
+    { term:'必至', read:'ひっし', def:'次に詰む手が防げない状態。詰みの一歩手前。' },
+  ]},
+  { cat:'対局・制度', terms: [
+    { term:'七番勝負', read:'しちばんしょうぎ', def:'名人戦の形式。先に4勝した方が勝者。最大7局行われる。' },
+    { term:'順位戦', read:'じゅんいせん', def:'名人への挑戦権を争うリーグ戦。A〜C2の5クラスに分かれ、A級1位が名人への挑戦者になる。' },
+    { term:'A級', read:'えーきゅう', def:'順位戦の最高クラス。約10名が所属し「将棋界のトップ10」とも言われる。' },
+    { term:'永世名人', read:'えいせいめいじん', def:'名人を通算5期獲得した棋士に与えられる称号。引退後に名乗れる（特例あり）。現在6名が資格者。' },
+    { term:'立会人', read:'たちあいにん', def:'対局の公正な進行を見守る役割の棋士。封じ手を預かるのも立会人。' },
+  ]},
+  { cat:'ABEMA用語', terms: [
+    { term:'評価値グラフ', read:'ひょうかちぐらふ', def:'ABEMAで表示される形勢の推移グラフ。上がると先手有利、下がると後手有利。急落したところが「敗着候補」。' },
+    { term:'最善手', read:'さいぜんて', def:'AIが計算した最も良い一手。人間が最善手を指し続けると「AI超え」と話題になる。' },
+    { term:'秒読み', read:'びょうよみ', def:'持ち時間を使い切ったあと、一手ごとに制限時間が与えられる状態。ABEMAで「残り〇秒」と表示される緊張場面。' },
+    { term:'悪手', read:'あくしゅ', def:'評価値を大きく下げる手。ABEMAのAI解析で「？？」マークがつくことも。' },
+  ]},
+];
+
+function buildGloss(data) {
+  return data.map(g => `
+    <div class="gloss-group" data-cat="${g.cat}">
+      <div class="gloss-cat">${g.cat}</div>
+      ${g.terms.map(t => `
+        <div class="gloss-item" data-term="${t.term}${t.read}${t.def}">
+          <div class="gloss-term">${t.term}<span class="gloss-read">${t.read}</span></div>
+          <div class="gloss-def">${t.def}</div>
+        </div>`).join('')}
+    </div>`).join('');
+}
+
+document.getElementById('gloss-container').innerHTML = buildGloss(glossData);
+
+function filterGloss(q) {
+  const kw = q.trim().toLowerCase();
+  if (!kw) { document.getElementById('gloss-container').innerHTML = buildGloss(glossData); return; }
+  const filtered = glossData.map(g => ({
+    ...g,
+    terms: g.terms.filter(t => (t.term+t.read+t.def).includes(kw))
+  })).filter(g => g.terms.length > 0);
+  const html = filtered.length ? buildGloss(filtered) : '<div class="gloss-empty">該当する用語が見つかりません</div>';
+  document.getElementById('gloss-container').innerHTML = html;
+}
 </script>
 </body>
 </html>
+
